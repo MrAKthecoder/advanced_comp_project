@@ -1,0 +1,12 @@
+seed: 42
+processed_root: data/processed
+output_dir: outputs/train_runs/default
+batch_size: 4
+num_workers: 2
+epochs: 30
+learning_rate: 0.0002
+weight_decay: 0.00001
+grad_weight: 0.2
+base_channels: 32
+device: cuda
+save_every: 5

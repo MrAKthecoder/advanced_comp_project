@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+
+# Data and outputs
+outputs/
+reports/figures/
+*.pt
+*.pth
+*.hdr
+*.exr
+
+# VS Code
+.vscode/
