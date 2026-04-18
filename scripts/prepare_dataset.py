@@ -90,6 +90,9 @@ def main() -> None:
     parser.add_argument("--train-ratio", type=float, default=0.7)
     parser.add_argument("--val-ratio", type=float, default=0.15)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--train-copies", type=int, default=1, help="How many augmented pairs to create per train HDR image.")
+    parser.add_argument("--val-copies", type=int, default=1, help="How many pairs to create per val HDR image.")
+    parser.add_argument("--test-copies", type=int, default=1, help="How many pairs to create per test HDR image.")
     args = parser.parse_args()
 
     hdr_files = list_hdr_files(args.raw_hdr_dir)
@@ -128,9 +131,14 @@ def main() -> None:
         elif sample_id in split_map["val"]:
             split_name = "val"
 
-        ldr_low, hdr_log = build_pairs(hdr, split_name)
-        cv2.imwrite(str(args.processed_root / split_name / "ldr" / f"{sample_id}.png"), ldr_low)
-        np.save(args.processed_root / split_name / "hdr" / f"{sample_id}.npy", hdr_log)
+        copies = args.train_copies if split_name == "train" else args.val_copies if split_name == "val" else args.test_copies
+        copies = max(1, int(copies))
+
+        for copy_idx in range(copies):
+            out_id = sample_id if copies == 1 else f"{sample_id}_aug{copy_idx:02d}"
+            ldr_low, hdr_log = build_pairs(hdr, split_name)
+            cv2.imwrite(str(args.processed_root / split_name / "ldr" / f"{out_id}.png"), ldr_low)
+            np.save(args.processed_root / split_name / "hdr" / f"{out_id}.npy", hdr_log)
 
         # Bracketing scenes are created only from test split to keep eval clean.
         if split_name == "test":
