@@ -11,7 +11,7 @@ Low-exposure images lose detail in shadows and compress dynamic range. The goal 
 ## 3. Objectives
 1. Implement bracketing HDR methods (Debevec + Mertens).
 2. Implement a single-shot AI HDR reconstruction model.
-3. Compare all methods with PSNR, SSIM, latency, and VRAM.
+3. Quantitatively compare the three core research methods with PSNR, SSIM, latency, and VRAM.
 4. Build an interactive application for demonstration.
 
 ## 4. Dataset and Data Preparation
@@ -61,6 +61,19 @@ Also saved:
 - `reference_tonemap.png`
 
 ## 5. Methods Used
+
+This project includes two method scopes:
+1. **Implemented in the full system:** 7 methods total.
+2. **Formally benchmarked for quantitative comparison:** 3 core methods (Debevec, Mertens, Single-shot U-Net).
+
+Implemented methods in total (7):
+- Debevec HDR merge + tone mapping (bracketing)
+- Mertens exposure fusion (bracketing)
+- Single-shot U-Net log-HDR reconstruction (AI)
+- retinex_lime_plus (app enhancement preset)
+- selective_shadow_relight (app enhancement preset)
+- single_fusion_hdr (app enhancement preset)
+- cinematic_grade (app enhancement preset)
 
 ### 5.1 Method A: Debevec HDR Merge (Bracketing)
 Pipeline:
@@ -117,7 +130,10 @@ In addition to benchmarked methods, the Streamlit app includes practical enhance
 - `cinematic_grade`
 - `single_shot_ai`
 
-These improve usability for single-image demos but are separate from the strict benchmark trio above.
+Note on naming:
+- `single_shot_ai` in the app is the same core Single-shot U-Net method listed above.
+
+These app options improve usability for single-image demos, while formal benchmark tables in this report are restricted to the 3 research comparison methods.
 
 ## 6. Training Setup
 
